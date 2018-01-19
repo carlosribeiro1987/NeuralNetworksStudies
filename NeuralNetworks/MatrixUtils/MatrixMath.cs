@@ -1,13 +1,15 @@
 ﻿using NeuralNetworks.Exception;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace NeuralNetworks.MatrixUtils {
     public class MatrixMath {
 
+        /// <summary>
+        /// Add two matrices. Both matrices must have the same dimensions.
+        /// </summary>
+        /// <param name="a">The fist matrix to add.</param>
+        /// <param name="b">The second matrix to add.</param>
+        /// <returns>A new matrix with the results of addition.</returns>
         public static Matrix Add(Matrix a, Matrix b) {
             if ((a.Rows != b.Rows) || (a.Columns != b.Columns))
                 throw new MatrixError("To add the matrixes they must have the same number of rows and columns.");
@@ -19,7 +21,12 @@ namespace NeuralNetworks.MatrixUtils {
             }
             return new Matrix(result);
         }
-
+        /// <summary>
+        /// Subtract one matrix from another. Both matrices must have the same dimensions.
+        /// </summary>
+        /// <param name="a">The matrix to subtract from.</param>
+        /// <param name="b">The matrix that will be subtracted from the first.</param>
+        /// <returns>A new matrix with the results of subtraction.</returns>
         public static Matrix Subtract(Matrix a, Matrix b) {
             if ((a.Rows != b.Rows) || (a.Columns != b.Columns))
                 throw new MatrixError("To subtract the matrixes they must have the same number of rows and columns.");
@@ -31,7 +38,12 @@ namespace NeuralNetworks.MatrixUtils {
             }
             return new Matrix(result);
         }
-
+        /// <summary>
+        /// Multiply every elements of a matrix by the specified value.
+        /// </summary>
+        /// <param name="matrix">The matrix whose elements will be multiplied.</param>
+        /// <param name="value">The value to multiply.</param>
+        /// <returns>A new matrix with the results of multiplication.</returns>
         public static Matrix Multiply(Matrix matrix, double value) {
             double[,] result = new double[matrix.Rows, matrix.Columns];
             for (int row = 0; row < matrix.Rows; row++) {
@@ -41,7 +53,12 @@ namespace NeuralNetworks.MatrixUtils {
             }
             return new Matrix(result);
         }
-
+        /// <summary>
+        /// Multiply two matrices. The number of coumns of the first matrix must match the number of rows in the second.
+        /// </summary>
+        /// <param name="a">The first matrix. The number of columns must match the number of rows in the second.</param>
+        /// <param name="b">The second matrix. The number of rows must match the number of columns in the first.</param>
+        /// <returns>A new matrix with the results of multiplication.</returns>
         public static Matrix Multiply(Matrix a, Matrix b) {
             if (a.Columns != b.Rows)
                 throw new MatrixError("The number of columns on matrix 'a' must match the number of rows on matrix 'b'.");
@@ -57,7 +74,12 @@ namespace NeuralNetworks.MatrixUtils {
             }
             return new Matrix(result);
         }
-
+        /// <summary>
+        /// Divide every element of a matrix by the specified value.
+        /// </summary>
+        /// <param name="matrix">The matrix whose elements will be divided.</param>
+        /// <param name="value">The value to divide.</param>
+        /// <returns>A new matrix with the results of division.</returns>
         public static Matrix Divide(Matrix matrix, double value) {
             double[,] result = new double[matrix.Rows, matrix.Columns];
             for (int row = 0; row < matrix.Rows; row++) {
@@ -67,7 +89,12 @@ namespace NeuralNetworks.MatrixUtils {
             }
             return new Matrix(result);
         }
-
+        /// <summary>
+        /// Calculte the dot product of two matrices. Both matrices must be vectors.
+        /// </summary>
+        /// <param name="a">The first matrix. Must be a vector.</param>
+        /// <param name="b">The second matrix. Must be a vector.</param>
+        /// <returns>The dot product of the matrices.</returns>
         public static double DotProduct(Matrix a, Matrix b) {
             if (!a.IsVector() || !b.IsVector())
                 throw new MatrixError("To take the dot product, both matrices must be vectors.");
@@ -82,7 +109,12 @@ namespace NeuralNetworks.MatrixUtils {
             return result;
         }
 
-        public static double VectorLenght(Matrix input) {
+        /// <summary>
+        /// Calculate the vector length of of the matrix. The matrix must be a vector.
+        /// </summary>
+        /// <param name="input">The vector to calculate.</param>
+        /// <returns>The vector length.</returns>
+        public static double VectorLength(Matrix input) {
             if (!input.IsVector())
                 throw new MatrixError("Can only take the vector length of a vector.");
             double[] vector = input.ToPackedArray();
@@ -93,6 +125,11 @@ namespace NeuralNetworks.MatrixUtils {
             return Math.Sqrt(temp);
         }
 
+        /// <summary>
+        /// Transpose the specified matrix.
+        /// </summary>
+        /// <param name="input">The matrix to transpose.</param>
+        /// <returns>The transposed matrix.</returns>
         public static Matrix Transpose(Matrix input) {
             double[,] output = new double[input.Columns, input.Rows];
             for (int row = 0; row < input.Rows; row++) {
@@ -103,6 +140,11 @@ namespace NeuralNetworks.MatrixUtils {
             return new Matrix(output);
         }
 
+        /// <summary>
+        /// Create an identity matrix. The identity matrix is always square.
+        /// </summary>
+        /// <param name="size">The size of the identity matrix. Must be greater or equals to 1.</param>
+        /// <returns>The identity matrix.</returns>
         public static Matrix Identity(int size) {
             if (size < 1)
                 throw new MatrixError("The size of identity matrices can't be less than 1.");
@@ -113,6 +155,11 @@ namespace NeuralNetworks.MatrixUtils {
             return result;
         }
 
+        /// <summary>
+        /// Copy one matrix to another. Both matrices must have the same dimensions.
+        /// </summary>
+        /// <param name="source">The matrix to be copied.</param>
+        /// <param name="target">The matrix to copy to.</param>
         public static void Copy(Matrix source, Matrix target) {
             if ((source.Rows != target.Rows) || (source.Columns != target.Columns))
                 throw new MatrixError("The target matrix must have the same dimensions of the source matrix.");
@@ -123,6 +170,12 @@ namespace NeuralNetworks.MatrixUtils {
             }
         }
 
+        /// <summary>
+        /// Delete a row from the matrix.
+        /// </summary>
+        /// <param name="matrix">The matrix</param>
+        /// <param name="rowIndex">The row index.</param>
+        /// <returns>The matrix without the delected row.</returns>
         public static Matrix DeleteRow(Matrix matrix, int rowIndex) {
             if(rowIndex > matrix.Rows)
                 throw new MatrixError(string.Format("Can't delete row [{0}] from matrix. It has only {1} rows.", rowIndex, matrix.Rows));
@@ -139,6 +192,12 @@ namespace NeuralNetworks.MatrixUtils {
             return new Matrix(newMatrix);
         }
 
+        /// <summary>
+        /// Delete a column from the matrix.
+        /// </summary>
+        /// <param name="matrix">The matrix.</param>
+        /// <param name="columnIndex">The column index.</param>
+        /// <returns>The matrix without the deleted column.</returns>
         public static Matrix DeleteColumn(Matrix matrix, int columnIndex) {
             if(columnIndex > matrix.Columns)
                 throw new MatrixError(string.Format("Can't delete column [{0}] from matrix. It has only {1} columns.", columnIndex, matrix.Columns));
@@ -156,17 +215,3 @@ namespace NeuralNetworks.MatrixUtils {
         }
     }
 }
-
-
-
-/*
-        #region CONSTRUCTORS
-        #endregion CONSTRUCTORS
-
-        #region FUNCTIONS
-        #endregion FUNCTIONS
-
-        #region PROPERTIES
-        #endregion PROPERTIES
-     
-*/
