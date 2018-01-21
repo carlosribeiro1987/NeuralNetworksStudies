@@ -2,6 +2,7 @@
 using System;
 
 namespace NeuralNetworks.MatrixUtils {
+    [Serializable]
     public class Matrix {
         private double[,] matrix;
         #region CONSTRUCTORS
@@ -295,6 +296,7 @@ namespace NeuralNetworks.MatrixUtils {
 
         #endregion PROPERTIES
 
+        
     }
 }
 
