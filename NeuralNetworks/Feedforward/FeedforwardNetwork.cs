@@ -20,6 +20,10 @@ namespace NeuralNetworks.Feedforward {
 
         #region FUNCTIONS
 
+        /// <summary>
+        /// Add a layer to this neural network.
+        /// </summary>
+        /// <param name="layer">The layer to add.</param>
         public void AddLayer(FeedforwardLayer layer) {
             if (_outputLayer != null) {
                 layer.PreviousLayer = _outputLayer;
@@ -32,6 +36,11 @@ namespace NeuralNetworks.Feedforward {
             _layers.Add(layer);
         }
 
+        /// <summary>
+        /// Compute the output from a given input to the neural network.
+        /// </summary>
+        /// <param name="input">The input to provide to the neural network.</param>
+        /// <returns>The results from the output neurons.</returns>
         public double[] ComputeOutputs(double[] input) {
             if (input.Length != _inputLayer.NeuronCount)
                 throw new NeuralNetworkError(string.Format("Size mismatch: Can't compute outputs for input size of {0}. The size of input layer is {1}.", input.Length, _inputLayer.NeuronCount));
@@ -44,6 +53,12 @@ namespace NeuralNetworks.Feedforward {
             return _outputLayer.Fire;
         }
 
+        /// <summary>
+        /// Calculate the error for this neural network. The error is calculated using Root Mean Square.
+        /// </summary>
+        /// <param name="input">The input patterns.</param>
+        /// <param name="ideal">The output patterns.</param>
+        /// <returns>The error percentage.</returns>
         public double CalculateError(double[][] input, double[][] ideal) {
             ErrorCalculation errorCalc = new ErrorCalculation();
             for (int i = 0; i < ideal.Length; i++) {
@@ -53,6 +68,10 @@ namespace NeuralNetworks.Feedforward {
             return errorCalc.RootMeanSquare();
         }
 
+        /// <summary>
+        /// Calculate the total nuber of layers in this neural network.
+        /// </summary>
+        /// <returns>The total nuber of neurons.</returns>
         public int CalculateNeuronCount() {
             int result = 0;
             foreach (FeedforwardLayer layer in _layers) {
@@ -61,6 +80,10 @@ namespace NeuralNetworks.Feedforward {
             return result;
         }
 
+        /// <summary>
+        /// Clone the structure of this neural network.
+        /// </summary>
+        /// <returns>A cloned copy of the structure of the neural network.</returns>
         public FeedforwardNetwork CloneStructure() {
             FeedforwardNetwork result = new FeedforwardNetwork();
             foreach (FeedforwardLayer layer in _layers) {
@@ -70,6 +93,10 @@ namespace NeuralNetworks.Feedforward {
             return result;
         }
 
+        /// <summary>
+        /// Returns a clone of this neural network. Including weight, threshold and structure.
+        /// </summary>
+        /// <returns>A cloned copy of this neural network.</returns>
         public object Clone() {
             FeedforwardNetwork result = CloneStructure();
             double[] copy = MatrixCODEC.NetworkToArray(this);
@@ -77,12 +104,21 @@ namespace NeuralNetworks.Feedforward {
             return result;
         }
 
+        /// <summary>
+        /// Reset the weight matrix and thresholds.
+        /// </summary>
         public void Reset() {
             foreach(FeedforwardLayer layer in _layers) {
                 layer.Reset();
             }
         }
 
+        /// <summary>
+        /// Compare this neural network with another.
+        /// To be equal it must have the same structure and matrix values.
+        /// </summary>
+        /// <param name="other">The other neural network.</param>
+        /// <returns>True if the neural networks are equal.</returns>
         public bool Equals(FeedforwardNetwork other) {
             int i = 0;
             foreach (FeedforwardLayer layer in _layers) {
@@ -105,32 +141,16 @@ namespace NeuralNetworks.Feedforward {
 
         #region PROPERTIES
 
+        /// <summary>
+        /// The input layer.
+        /// </summary>
         public FeedforwardLayer InputLayer {
             get { return _inputLayer; }
         }
 
-        public FeedforwardLayer OutputLayer {
-            get { return _outputLayer; }
-        }
-
-        public IList<FeedforwardLayer> Layers {
-            get { return _layers; }
-        }
-
-        public int HiddenLayersCount {
-            get { return _layers.Count - 2; }
-        }
-
-        public int MatrixSize {
-            get {
-                int result = 0;
-                foreach (FeedforwardLayer layer in _layers) {
-                    result += layer.MatrixSize;
-                }
-                return result;
-            }
-        }
-
+        /// <summary>
+        /// A list of the hidden layers.
+        /// </summary>
         public ICollection<FeedforwardLayer> HiddenLayers {
             get {
                 ICollection<FeedforwardLayer> result = new List<FeedforwardLayer>();
@@ -141,6 +161,40 @@ namespace NeuralNetworks.Feedforward {
                 return result;
             }
         }
+
+        /// <summary>
+        /// The output layer.
+        /// </summary>
+        public FeedforwardLayer OutputLayer {
+            get { return _outputLayer; }
+        }
+
+        /// <summary>
+        /// The layers in this neural network.
+        /// </summary>
+        public IList<FeedforwardLayer> Layers {
+            get { return _layers; }
+        }
+
+        /// <summary>
+        /// The number of hidden layers in this neural network.
+        /// </summary>
+        public int HiddenLayersCount {
+            get { return _layers.Count - 2; }
+        }
+
+        /// <summary>
+        /// The size of weight and threshold matrix.
+        /// </summary>
+        public int MatrixSize {
+            get {
+                int result = 0;
+                foreach (FeedforwardLayer layer in _layers) {
+                    result += layer.MatrixSize;
+                }
+                return result;
+            }
+        }        
 
         #endregion PROPERTIES
     }
