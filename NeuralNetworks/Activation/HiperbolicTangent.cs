@@ -20,7 +20,10 @@ namespace NeuralNetworks.Activation {
         /// <param name="d">The input to the function.</param>
         /// <returns>The ouput from the function.</returns>
         public double ActivationFunction(double input) {
-            return (BoundNumbers.Exp(input * 2.0) - 1) / (BoundNumbers.Exp(input * 2.0 + 1));
+            //return (BoundNumbers.Exp(input * 2.0) - 1) / (BoundNumbers.Exp(input * 2.0 + 1));
+            
+            //Correction suggested by https://github.com/felipetavares
+            return (BoundNumbers.Exp(input) - BoundNumbers.Exp(-input)) / (BoundNumbers.Exp(input) + BoundNumbers.Exp(-input)); 
         }
 
         /// <summary>

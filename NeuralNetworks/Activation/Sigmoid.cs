@@ -24,7 +24,7 @@ namespace NeuralNetworks.Activation {
         }
 
         /// <summary>
-        /// Performs the derivative function of the activation function function on the input.
+        /// Performs the derivative function of the Activation Function function on the input.
         /// </summary>
         /// <param name="d">The input to the function.</param>
         /// <returns>The ouput from the function.</returns>
